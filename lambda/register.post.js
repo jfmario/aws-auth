@@ -1,11 +1,5 @@
 
 var AWS = require ( 'aws-sdk' );
-
-AWS.config.update({
-    region: 'us-west-2',
-    endpoint: "https://dynamodb.us-west-2.amazonaws.com"
-});
-
 var dynamodb = new AWS.DynamoDB.DocumentClient ();
 
 exports.handler = ( event, context, callback ) => {
@@ -55,7 +49,7 @@ exports.handler = ( event, context, callback ) => {
     var params = {
         TableName: 'Users', Item: userObject
     };
-    
+
     dynamodb.put ( params, function ( err, data )
     {
         if ( err )
