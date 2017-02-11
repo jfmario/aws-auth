@@ -93,7 +93,7 @@ exports.handler = ( event, context, callback ) => {
                                 "#auth_token": 'auth_token'
                             },
                             ExpressionAttributeValues: {
-                                ':auth_token': { token: token, expiration: expirationDate.toISOString () }
+                                ':auth_token': { auth_token: token, expiration: expirationDate.toISOString () }
                             },
                             ReturnValues: 'UPDATED_NEW'
                         };
