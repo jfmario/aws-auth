@@ -38,7 +38,6 @@ exports.handler = ( event, context, callback ) => {
             statusCode: 400
         });
     }
-
     var userQuery = {
         TableName: 'Users',
         ProjectionExpression: '#username',
@@ -46,6 +45,7 @@ exports.handler = ( event, context, callback ) => {
         ExpressionAttributeNames: { '#username': 'username' },
         ExpressionAttributeValues: { ':username': req.username }
     };
+    
     dynamodb.query ( userQuery, function ( err, data )
     {
         if ( err ) callback ( err )

@@ -1,0 +1,11 @@
+{
+    "username": "jfmario",
+    "obj": {
+        "auth": {
+            "token": "abc123",
+            "expiration": "2017-02-13T14:34:00"
+        },
+        "emailAddress": "john.f.marion@gmail.com",
+        "password": "password123-sha"
+    }
+}
