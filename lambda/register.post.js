@@ -39,26 +39,50 @@ exports.handler = ( event, context, callback ) => {
         });
     }
 
-    var userObject = {
-        username: req.username,
-        data: {
-            password: req.password,
-            emailAddress: req.emailAddress
-        }
+    var userQuery = {
+        TableName: 'Users',
+        ProjectionExpression: '#username',
+        KeyConditionExpression: '#username = :username',
+        ExpressionAttributeNames: { '#username': 'username' },
+        ExpressionAttributeValues: { ':username': req.username }
     };
-    var params = {
-        TableName: 'Users', Item: userObject
-    };
-
-    dynamodb.put ( params, function ( err, data )
+    dynamodb.query ( userQuery, function ( err, data )
     {
-        if ( err )
-            callback ( err );
-        else
-            callback ( null, {
-                body: JSON.stringify ({ success: true }),
+        if ( err ) callback ( err )
+        else 
+        {
+            if ( data.Count >= 1 ) callback ( null, {
+                body: JSON.stringify ({
+                    success: false,
+                    reason: "Username exists."
+                }),
                 headers: {},
-                statusCode: 201
+                statusCode: 409
             });
+            else
+            {
+                var userObject = {
+                    username: req.username,
+                    data: {
+                        password: req.password,
+                        emailAddress: req.emailAddress
+                    }
+                };
+                var userRecord = {
+                    TableName: 'Users', Item: userObject
+                };
+                dynamodb.put ( userRecord, function ( err, data )
+                {
+                    if ( err )
+                        callback ( err );
+                    else
+                        callback ( null, {
+                            body: JSON.stringify ({ success: true }),
+                            headers: {},
+                            statusCode: 201
+                        });
+                });
+            }
+        }
     });
 }
