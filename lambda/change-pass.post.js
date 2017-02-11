@@ -5,7 +5,54 @@ var dynamodb = new AWS.DynamoDB.DocumentClient ();
 
 function main ( req, callback, user )
 {
-
+    if ( !req.hasOwnProperty ( 'oldPassword') || !req.hasOwnProperty ( 'newPassword' ) )
+    {
+        callback ( null, {
+            body: JSON.stringify ({
+                success: false,
+                reason: "Both old and new passwords required."
+            }),
+            headers: {},
+            statusCode: 400
+        });
+    }
+    else
+    {
+        if ( req.oldPassword != user.obj.password )
+            callback ( null, {
+                body: JSON.stringify ({
+                    success: false,
+                    reason: "Bad password."
+                }),
+                headers: {},
+                statusCode: 400
+            });
+        else
+        {
+            var userUpdate = {
+                TableName: 'Users',
+                Key: { "username": req.username },
+                UpdateExpression: "set obj.#password = :password",
+                ExpressionAttributeNames: {
+                    "#password": 'password'
+                },
+                ExpressionAttributeValues: {
+                    ':password': req.newPassword
+                },
+                ReturnValues: 'UPDATED_NEW'
+            };
+            dynamodb.update ( userUpdate, function ( err, data ) {
+                if ( err ) callback ( err );
+                else callback ( null, {
+                    body: JSON.stringify ({
+                        success: true
+                    }),
+                    headers: {},
+                    statusCode: 200
+                });
+            })
+        }
+    }
 }
 
 function authCheck ( req, next, awsCb )
@@ -25,7 +72,7 @@ function authCheck ( req, next, awsCb )
     {
         var userQuery = {
             TableName: 'Users',
-            ProjectionExpression: '#username, obj.auth_token.auth_token, obj.auth_token.expiration',
+            ProjectionExpression: '#username, obj.password, obj.emailAddress, obj.auth_token.auth_token, obj.auth_token.expiration',
             KeyConditionExpression: '#username = :username',
             ExpressionAttributeNames: {
                 '#username': 'username'
