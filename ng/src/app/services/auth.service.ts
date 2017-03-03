@@ -14,7 +14,7 @@ export class AuthService
 
     constructor ( private http: Http ) {}
 
-    private login ( username: string, password: string ): Promise<Boolean>
+    public login ( username: string, password: string ): Promise<Boolean>
     {
         var self = this;
         return this.http.post ( this._url + '/login', {
@@ -29,6 +29,16 @@ export class AuthService
                 return true;
             }
             else return false;
-        })
+        });
+    }
+
+    public register ( username: string, password: string, email: string )
+    {
+        var self = this;
+        return this.http.post ( this._url + '/register', {
+            emailAddress: email,
+            password: password,
+            username: username
+        }).toPromise()
     }
 };
