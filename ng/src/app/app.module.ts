@@ -4,25 +4,34 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
+import { ButtonModule, InputTextModule, MessagesModule } from 'primeng/primeng';
+
 import { AppComponent } from './app.component';
 import { BlankComponent } from './blank.component';
+import { RegisterComponent } from './components/register/register.component';
+import { AuthService } from './services/auth.service';
 
 const appRoutes: Routes = [
-    { component: BlankComponent, path: '' }
+    { component: BlankComponent, path: '' },
+    { component: RegisterComponent, path: 'register' }
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    BlankComponent
+    BlankComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
+    ButtonModule,
+    InputTextModule,
+    MessagesModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

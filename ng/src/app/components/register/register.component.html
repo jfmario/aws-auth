@@ -1,0 +1,46 @@
+<h2 class="display-5">
+    JohnFMarion.com Authentication
+</h2>
+
+<p>Email address is not required for simply logging in.
+
+<div class="ui-grid ui-grid-responsive ui-grid-pad">
+
+    <p-messages [closable]="false" [value]="messages"></p-messages>
+
+    <div class="ui-grid-row">
+       <div class="ui-grid-col-2">
+           <label for="username"><b>Username</b></label>
+       </div>
+       <div class="ui-grid-col-10">
+           <input pInputText id="username" type="text" style="width:100%" [(ngModel)]="inputUsername" />
+       </div>
+    </div>
+    <div class="ui-grid-row">
+
+       <div class="ui-grid-col-2">
+           <label for="password"><b>Password</b></label>
+       </div>
+       <div class="ui-grid-col-10">
+           <input pInputText id="password" style="width:100%" type="password" [(ngModel)]="inputPassword" />
+       </div>
+    </div>
+    <div class="ui-grid-row">
+
+       <div class="ui-grid-col-2">
+           <label for="email"><b>E-Mail Address</b></label>
+       </div>
+       <div class="ui-grid-col-10">
+           <input pInputText id="email" style="width:100%" type="text" [(ngModel)]="inputEmail" />
+       </div>
+    </div>
+    <div class="ui-grid-row">
+
+        <div class="ui-grid-col-2"></div>
+
+        <div class="ui-grid-col-10">
+            <button pButton label="Login" type="button" (click)="login()" [disabled]="locked"></button>
+            <button pButton class="ui-button-success" label="Register" type="button" (click)="register()" [disabled]="locked"></button>
+        </div>
+    </div>
+</div>
