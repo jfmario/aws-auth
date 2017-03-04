@@ -59,4 +59,13 @@ export class AuthService
             return res.json ();
         });
     }
+    public logoff ()
+    {
+        this.http.post ( this._url + '/logff', {
+            username: this.currentUsername,
+            token: this.currentToken
+        });
+        this.currentUsername = null;
+        this.currentToken = null;
+    }
 };
