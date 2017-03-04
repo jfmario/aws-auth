@@ -17,32 +17,24 @@ var makeToken = function ()
 
 exports.handler = ( event, context, callback ) => {
 
-    var req = JSON.parse ( event.body );
+    var req = event;
     var validated = true;
 
     if ( !req.hasOwnProperty ( 'username' ) )
     {
         validated = false;
         callback ( null, {
-            body: JSON.stringify ({
                 success: false,
                 reason: "No username specified."
-            }),
-            headers: {},
-            statusCode: 400
-        });
+            });
     }
     if ( !req.hasOwnProperty ( 'password' ) )
     {
         validated = false;
         callback ( null, {
-            body: JSON.stringify ({
                 success: false,
                 reason: "No password specified."
-            }),
-            headers: {},
-            statusCode: 400
-        });
+            });
     }
 
     if ( validated )
@@ -59,23 +51,15 @@ exports.handler = ( event, context, callback ) => {
 
         dynamodb.query ( userQuery, function ( err, data )
         {
-            if ( err ) callback ( null, {
-                body: JSON.stringify ( err ),
-                headers: {},
-                statusCode: 500
-            });
+            if ( err ) callback ( null, err );
             else
             {
                 if ( data.Count === 0 ) 
                 {
                     callback ( null, {
-                        body: JSON.stringify ({
                             success: false,
                             reason: "Bad username or password."
-                        }),
-                        headers: {},
-                        statusCode: 401
-                    });  
+                        });  
                 }
                 else
                 {
@@ -100,29 +84,17 @@ exports.handler = ( event, context, callback ) => {
 
                         dynamodb.update ( userUpdate, function ( err, data )
                         {
-                            if ( err ) callback ( null, {
-                                body: JSON.stringify ( err ),
-                                headers: {},
-                                statusCode: 500
-                            });
+                            if ( err ) callback ( null, err );
                             else callback ( null, {
-                                body: JSON.stringify ({
                                     success: true,
                                     token: token
-                                }),
-                                headers: {},
-                                statusCode: 202
-                            });
+                                });
                         });
                     }
                     else callback ( null, {
-                        body: JSON.stringify ({
                             success: false,
                             reason: "Bad username or password."
-                        }),
-                        headers: {},
-                        statusCode: 401
-                    });
+                        });
                 }
             }
         });

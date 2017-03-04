@@ -20,6 +20,24 @@ export class RegisterComponent
 
     }
 
+    private login ()
+    {
+        var self = this;
+        this.authService.login ( this.inputUsername, this.inputPassword )
+        .then ( data => {
+            if ( !data.success )
+                    self.messages = [{
+                        detail: data.reason,
+                        severity: 'error',
+                        summary: 'Error'
+                    }];
+            else self.messages = [{
+                detail: "You are now logged in.",
+                severity: 'success',
+                summary: 'Welcome'
+            }];
+        });
+    }
     private register ()
     {
         var self = this;

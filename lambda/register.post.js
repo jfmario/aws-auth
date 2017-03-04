@@ -47,7 +47,7 @@ exports.handler = ( event, context, callback ) => {
             {
                 var userObject = {
                     username: req.username,
-                    data: {
+                    obj: {
                         password: req.password,
                         emailAddress: req.emailAddress
                     }

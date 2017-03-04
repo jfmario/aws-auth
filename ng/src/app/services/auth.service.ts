@@ -19,7 +19,9 @@ export class AuthService
     public login ( username: string, password: string ): Promise<any>
     {
 
-        password = new jsSHA ( "SHA-512", password ).getHash ( 'HEX' );
+        var shaObj = new jsSHA ( "SHA-512", 'TEXT' );
+        shaObj.update ( password );
+        password = shaObj.getHash ( 'HEX' );
 
         var self = this;
         return this.http.post ( this._url + '/login', {
@@ -31,9 +33,11 @@ export class AuthService
             {
                 self.currentUsername = username;
                 self.currentToken = data.success;
-                return true;
+                return data;
             }
-            else return false;
+            else return data;
+        }).catch ( res => {
+            return res.json ();
         });
     }
 
