@@ -1,5 +1,6 @@
 
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class RegisterComponent
 
     private messages: any[] = [];
 
-    constructor ( private authService: AuthService )
+    constructor ( private authService: AuthService,
+        private router: Router )
     {
 
     }
@@ -31,11 +33,15 @@ export class RegisterComponent
                         severity: 'error',
                         summary: 'Error'
                     }];
-            else self.messages = [{
-                detail: "You are now logged in.",
-                severity: 'success',
-                summary: 'Welcome'
-            }];
+            else 
+            {
+                self.messages = [{
+                    detail: "You are now logged in.",
+                    severity: 'success',
+                    summary: 'Welcome'
+                }];
+                self.router.navigate ( ['/landing'] );
+            }
         });
     }
     private register ()
