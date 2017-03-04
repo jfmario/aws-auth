@@ -10,11 +10,12 @@ import { AppComponent } from './app.component';
 import { BlankComponent } from './blank.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { RegisterComponent } from './components/register/register.component';
+import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 
 const appRoutes: Routes = [
     { component: BlankComponent, path: '' },
-    { component: LandingComponent, path: 'landing' },
+    { canActivate: [AuthGuard], component: LandingComponent, path: 'landing' },
     { component: RegisterComponent, path: 'register' }
 ];
 
@@ -34,7 +35,7 @@ const appRoutes: Routes = [
     InputTextModule,
     MessagesModule
   ],
-  providers: [AuthService],
+  providers: [AuthGuard, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -13,6 +13,7 @@ export class AuthService
 
     public currentToken: String = null;
     public currentUsername: String = null;
+    public redirectUrl: string = '/landing';
 
     constructor ( private http: Http ) {}
 

@@ -40,7 +40,7 @@ export class RegisterComponent
                     severity: 'success',
                     summary: 'Welcome'
                 }];
-                self.router.navigate ( ['/landing'] );
+                self.router.navigate ( [self.authService.redirectUrl] );
             }
         });
     }
