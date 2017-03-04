@@ -13,13 +13,9 @@ function authCheck ( req, next, awsCb )
     if ( !req.hasOwnProperty ( 'username' ) || !req.hasOwnProperty ( 'token' ) )
     {
         awsCb ( null, {
-            body: JSON.stringify ({
                 success: false,
                 reason: "No authentication."
-            }),
-            headers: {},
-            statusCode: 403
-        });
+            });
     }
     else
     {
@@ -34,23 +30,15 @@ function authCheck ( req, next, awsCb )
         };
         dynamodb.query ( userQuery, function ( err, data )
         {
-            if ( err ) callback ( null, {
-                body: JSON.stringify ( err ),
-                headers: {},
-                statusCode: 500
-            });
+            if ( err ) callback ( null, err );
             else
             {
                 if ( data.Count === 0 ) 
                 {
                     callback ( null, {
-                        body: JSON.stringify ({
                             success: false,
                             reason: "Bad username."
-                        }),
-                        headers: {},
-                        statusCode: 403
-                    });  
+                        });  
                 }
                 else
                 {
@@ -63,19 +51,15 @@ function authCheck ( req, next, awsCb )
                         next ( req, awsCb, usernameMatch );
                     }
                     else awsCb ( null, {
-                        body: JSON.stringify ({
                             success: false,
                             reason: "Bad or expired token."
-                        }),
-                        headers: {},
-                        statusCode: 403
-                    });
+                        });
                 }
             }
         });
     }
 }
 exports.handler = ( event, context, callback ) => {
-    var req = JSON.parse ( event.body );
+    var req = event;
     authCheck ( req, main, callback );
 }
