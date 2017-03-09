@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'auth-register',
-    templateUrl: './register.component.html'
+    templateUrl: './register.html'
 })
 export class RegisterComponent
 {
@@ -30,14 +30,14 @@ export class RegisterComponent
             if ( !data.success )
                     self.messages = [{
                         detail: data.reason,
-                        severity: 'error',
+                        severity: 'alert-danger',
                         summary: 'Error'
                     }];
             else 
             {
                 self.messages = [{
                     detail: "You are now logged in.",
-                    severity: 'success',
+                    severity: 'alert-success',
                     summary: 'Welcome'
                 }];
                 self.router.navigate ( [self.authService.redirectUrl] );
@@ -52,12 +52,12 @@ export class RegisterComponent
                 if ( !data.success )
                     self.messages = [{
                         detail: data.reason,
-                        severity: 'error',
+                        severity: 'alert-danger',
                         summary: 'Error'
                     }];
                 else self.messages = [{
                     detail: "You may now log in as " + this.inputUsername + '.',
-                    severity: 'success',
+                    severity: 'alert-success',
                     summary: 'Good'
                 }];
             });
