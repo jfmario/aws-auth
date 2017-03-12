@@ -33,7 +33,7 @@ export class AuthService
             if ( data.success )
             {
                 self.currentUsername = username;
-                self.currentToken = data.success;
+                self.currentToken = data.token;
                 return data;
             }
             else return data;
